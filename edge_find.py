@@ -1,3 +1,6 @@
+
+# ------------ 엣지 검출 후 x,y 최대 최소 좌표로 잘라내기 ---------------#
+
 import cv2, sys
 import numpy as np
 
@@ -48,9 +51,5 @@ def edge(src):
     cv2.imshow('img_trim', img_trim)
     cv2.waitKey(0)
 
-    # org_image = cv2.imread('img/'+src[8:])
-    # cv2.imshow('org_image', org_image)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-
-edge('img/test.png')
+if __name__ == '__main__':
+    edge('img/test.png')

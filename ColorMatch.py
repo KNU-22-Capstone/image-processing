@@ -5,6 +5,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
 
+import remove_background as rb
 
 # 클러스터의 수를 파악하고 히스토그램을 만듬(각 클러스터에 할당된 픽셀 수를 기반으로)
 
@@ -49,8 +50,11 @@ def plot_colors(hist, centroids):
 
 # -------------------------------------------k값에 따라 bar를 통해 빈도가 높은 색상을 표현------------------------------
 
-def image_color_cluster(image_path, checking, k=3):
-    image = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
+# def image_color_cluster(image_path, checking, k=5):
+def image_color_cluster(url, checking, k=5):
+    # image = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
+
+    image = rb.img_url_to_remove(url)
 
     # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     # image = image.reshape((image.shape[0] * image.shape[1], 3))
@@ -59,7 +63,7 @@ def image_color_cluster(image_path, checking, k=3):
     for i in image:
         for j in i:
             if j[3] > 1:
-                temp.append([j[2],j[1],j[0]])
+                temp.append([j[0],j[1],j[2]])
     # 클러스터 생성 (n_clusters = k)는 정해진 명령어(fit로 클러스터링함)
     clt = KMeans(n_clusters=k)
     clt.fit(np.array(temp))
@@ -108,23 +112,35 @@ def convert_rgb_to_hsv(r, g, b):
 # chkimg ="jeans.jpg"
 # chkimg ="jacket.jpg"
 # chkimg ="hoodie.jpg"
-# chkimg ="hat.jpg"
+chkimg ="hat.jpg"
 # chkimg ="dress_shoes.jpg"
 # chkimg ="cotton_pants.jpg"
-chkimg ="coat.jpg"
+# chkimg ="coat.jpg"
 # chkimg ="cardigan.jpg"
 # chkimg ="test.jpg"
 
 image = mpimg.imread("img/"+chkimg[:-3]+"png")
-
 plt.imshow(image)
-up_color = image_color_cluster("img/"+chkimg[:-3]+"png", True)  # TRUE는 해당 bar를 보여주게끔한다.밑에서는 생략하려고 함
+# up_color = image_color_cluster("img/"+chkimg[:-3]+"png", True)  # TRUE는 해당 bar를 보여주게끔한다.밑에서는 생략하려고 함
+up_color = image_color_cluster("https://cdn.imweb.me/upload/S201612025840bcf9c3866/4f56d1796c287.jpeg", True)  # TRUE는 해당 bar를 보여주게끔한다.밑에서는 생략하려고 함
 print("체크하는 의류 BRG Format: ", up_color)
-colorsB1 = up_color[2]
-colorsG1 = up_color[1]
-colorsR1 = up_color[0]
-up_hsv_color = convert_rgb_to_hsv(colorsR1, colorsG1, colorsB1)
+up_hsv_color = convert_rgb_to_hsv(up_color[0], up_color[1], up_color[2])
 print("저장되는 의류 HSV Format", up_hsv_color)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # -----------------------------------체크하는곳------------------------------------------
 
